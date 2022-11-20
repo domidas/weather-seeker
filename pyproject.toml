@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weather"
+version = "0.0.1"
+description = "Weather Seeker"
+requires-python = ">=3.0"
+
+dependencies = [
+    "requests"
+]
+
+[project.scripts]
+weather = "weather:main"

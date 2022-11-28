@@ -2,6 +2,57 @@
 
 from .weather import WeatherSeeker
 
+def getKey():
+    from os.path import exists
+    import os
+    import requests
+
+    key_exists = exists("./.api_key")
+
+    current_dir = os.getcwd()
+
+    if key_exists == True:
+
+        print(".api_key file found in " + current_dir)
+
+        with open('.api_key','r') as key:
+            api_key = key.read()
+
+    else:
+
+        api_key = input(
+                        "\n"
+                        "WARNING: No .api_key file found. Please enter API key now: "
+                        )
+        
+        print("\n"
+             "Saving key in " + current_dir + "/.api_key"
+            )
+        
+        f = open(".api_key", "a")
+        f.write(api_key)
+        f.close()
+    
+    print("Checking if key is valid...")
+
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+    check_url = base_url + "appid=" + api_key
+
+    reply = requests.get(check_url)
+
+    r = reply.json()
+
+    if r["cod"] == "400":
+
+        print("Server reply 400: Key is valid.")
+
+    else:
+        
+        error_code = (str(r["cod"]))
+
+        print("Server reply " + error_code + ". Key is invalid.")
+
 def main():
 
     seeker = WeatherSeeker()
